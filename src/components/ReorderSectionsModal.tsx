@@ -1,6 +1,6 @@
 import { Icon } from './Icon'
 import type { SectionDef } from '../types/cv'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface ReorderSectionsModalProps {
   isOpen: boolean
@@ -12,6 +12,12 @@ interface ReorderSectionsModalProps {
 
 export function ReorderSectionsModal({ isOpen, onClose, sections, sectionOrder, onReorder }: ReorderSectionsModalProps) {
   const [order, setOrder] = useState<string[]>(sectionOrder)
+
+  useEffect(() => {
+    if (isOpen) {
+      setOrder([...sectionOrder])
+    }
+  }, [isOpen, sectionOrder])
 
   if (!isOpen) return null
 

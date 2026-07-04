@@ -72,7 +72,7 @@ export const defaultCVData: CVData = {
 
   languages: [
     { id: '1', name: 'English', level: 'Native' },
-    { id: '2', name: 'Spanish', level: 'Fluent' },
+    { id: '2', name: 'Spanish', level: 'Native' },
   ],
 
   hobbies: [

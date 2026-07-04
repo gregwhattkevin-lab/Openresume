@@ -1,10 +1,23 @@
 import type { ReactNode } from 'react'
 import type { CVData, DesignSettings } from '../types/cv'
 import { baseSections, additionalSections } from '../data/sections'
+import { sanitizeHTML } from '../utils/sanitize'
+
+const DANGEROUS_PROTOCOLS = /^(javascript|data|vbscript|file):/i
+
+export function sanitizeURL(input: string): string {
+  if (!input || typeof input !== 'string') return ''
+  const trimmed = input.trim()
+  if (!trimmed) return ''
+  if (DANGEROUS_PROTOCOLS.test(trimmed)) return ''
+  if (/^https?:\/\//i.test(trimmed)) return trimmed
+  if (/^\//.test(trimmed)) return trimmed
+  return `https://${trimmed}`
+}
 
 export function HtmlContent({ html, className = '' }: { html: string; className?: string }) {
   if (!html) return null
-  return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />
+  return <div className={className} dangerouslySetInnerHTML={{ __html: sanitizeHTML(html) }} />
 }
 
 export function getFontClass(fontFamily: DesignSettings['fontFamily']): string {
@@ -397,18 +410,22 @@ export function SectionContent({ sectionKey, cv, design, variant = 'default' }: 
         <section>
           <SectionTitle />
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10pt]">
-            {cv.links.map((link) => (
-              <a
-                key={link.id}
-                href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:underline"
-                style={{ color: c }}
-              >
-                {link.label}
-              </a>
-            ))}
+            {cv.links.map((link) => {
+              const safeUrl = sanitizeURL(link.url)
+              if (!safeUrl) return null
+              return (
+                <a
+                  key={link.id}
+                  href={safeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:underline"
+                  style={{ color: c }}
+                >
+                  {link.label}
+                </a>
+              )
+            })}
           </div>
         </section>
       )

@@ -46,6 +46,11 @@ export function TopBar({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File is too large. Please select a JSON file under 5 MB.')
+      e.target.value = ''
+      return
+    }
     const reader = new FileReader()
     reader.onload = (event) => {
       const content = event.target?.result as string
@@ -156,7 +161,7 @@ export function TopBar({
                 }}
                 className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
               >
-                <Icon name="upload" size={16} />
+                <Icon name="download" size={16} />
                 Export JSON
               </button>
               <button
@@ -164,7 +169,7 @@ export function TopBar({
                 onClick={handleImportClick}
                 className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
               >
-                <Icon name="download" size={16} />
+                <Icon name="upload" size={16} />
                 Import JSON
               </button>
               <div className="border-t border-slate-100 my-1" />

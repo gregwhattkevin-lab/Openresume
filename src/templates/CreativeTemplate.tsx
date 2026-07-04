@@ -31,8 +31,8 @@ export function CreativeTemplate({ cv, design }: CreativeTemplateProps) {
             />
           ) : (
             <div className="w-24 h-24 rounded-lg bg-white/20 flex items-center justify-center text-3xl font-bold">
-              {personalInfo.firstName.charAt(0)}
-              {personalInfo.lastName.charAt(0)}
+              {personalInfo.firstName?.[0] || '?'}
+              {personalInfo.lastName?.[0] || '?'}
             </div>
           )}
           <div>

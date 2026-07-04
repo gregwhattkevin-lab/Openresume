@@ -35,14 +35,18 @@ export function SectionEditor({
     const file = e.target.files?.[0]
     if (!file) return
     if (!file.type.startsWith('image/')) {
-      alert('Por favor selecciona un archivo de imagen válido.')
+      alert('Please select a valid image file.')
+      return
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      alert('Image is too large. Please select a file under 10 MB.')
       return
     }
     try {
       const base64 = await resizeImage(file, 400, 400)
       updatePersonal('photo', base64)
     } catch {
-      alert('Error al procesar la imagen.')
+      alert('Error processing image.')
     }
   }
 

@@ -27,7 +27,7 @@ function Avatar({ cv, color }: { cv: CVData; color: string }) {
   }
   return (
     <div className="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold text-white" style={{ backgroundColor: color }}>
-      {cv.personalInfo.firstName[0]}{cv.personalInfo.lastName[0]}
+      {cv.personalInfo.firstName?.[0] || '?'}{cv.personalInfo.lastName?.[0] || '?'}
     </div>
   )
 }

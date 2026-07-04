@@ -34,8 +34,8 @@ export function ModernTemplate({ cv, design }: ModernTemplateProps) {
             className="w-28 h-28 rounded-full flex items-center justify-center text-white text-3xl font-bold border-4"
             style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
           >
-            {personalInfo.firstName.charAt(0)}
-            {personalInfo.lastName.charAt(0)}
+            {personalInfo.firstName?.[0] || '?'}
+            {personalInfo.lastName?.[0] || '?'}
           </div>
         )}
         <div className="flex-1 pt-1">

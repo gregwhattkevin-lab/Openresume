@@ -36,7 +36,7 @@ function saveState(state: AppState) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
-    // ignore storage errors
+    alert('Could not auto-save. Your browser storage may be full. Please export your data as JSON to avoid losing changes.')
   }
 }
 
@@ -61,7 +61,12 @@ export default function App() {
 
   useEffect(() => {
     if (!state.cv.sectionOrder.includes(activeSection)) {
-      setActiveSection(state.cv.sectionOrder[0] || 'personal')
+      const first = state.cv.sectionOrder[0]
+      if (first && state.cv.sectionOrder.includes(first)) {
+        setActiveSection(first)
+      } else {
+        setActiveSection('personal')
+      }
     }
   }, [state.cv.sectionOrder, activeSection])
 
@@ -92,7 +97,7 @@ export default function App() {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `resume-${state.cv.personalInfo.firstName.toLowerCase()}-${state.cv.personalInfo.lastName.toLowerCase()}.json`
+    link.download = `resume-${(state.cv.personalInfo.firstName || 'resume').toLowerCase()}-${(state.cv.personalInfo.lastName || '').toLowerCase()}.json`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -212,7 +217,7 @@ export default function App() {
       await new Promise((resolve) => requestAnimationFrame(resolve))
 
       const format = state.design.pageSize.toLowerCase()
-      const filename = `resume-${state.cv.personalInfo.firstName.toLowerCase()}-${state.cv.personalInfo.lastName.toLowerCase()}.pdf`
+      const filename = `resume-${(state.cv.personalInfo.firstName || 'resume').toLowerCase()}-${(state.cv.personalInfo.lastName || '').toLowerCase()}.pdf`
 
       const opt = {
         margin: 0,
